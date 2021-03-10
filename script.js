@@ -39,7 +39,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
                 //console.log(`${key}: ${studentDetails[key]}`);
                 
                 let [studentId,gender,moduleCode,groupId,diffgrp,status,postCode]
-                 =[studentDetails.StudentID,studentDetails.Gender,studentDetails.Gender,studentDetails.ModuleCode,
+                 =[studentDetails.StudentID,studentDetails.Gender,studentDetails.ModuleCode,
                     studentDetails.GroupId,studentDetails.DiffGrp,studentDetails.Status,studentDetails.PostalArea];
                 attendanceArray.push({studentId,gender,moduleCode,groupId,diffgrp,status,postCode});
             }  

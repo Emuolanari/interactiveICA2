@@ -1,6 +1,13 @@
+#svgMain {
+    margin-left:auto;
+    margin-right:auto; 
+    display:block;
+    border:1px solid blue;
+}
+
 .cities{
     fill: #eee;
-    stroke: #000; 
+    stroke: #333; 
     vector-effect: non-scaling-stroke;
 }
 

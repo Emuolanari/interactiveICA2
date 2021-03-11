@@ -1,7 +1,7 @@
 const width = 500;
 const height = 500;
 let attendanceArray=[];
-const url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_eer.json";
+const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 //const url = "https://bost.ocks.org/mike/map/uk.json";
 const projection = d3.geoMercator().translate([width/2,height/1.4]), path = d3.geoPath(projection);
 const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
@@ -21,14 +21,14 @@ function zoomed(event,d) {
       .attr('transform', event.transform);
   }
 
-var files = ["attendancedata.json", "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_eer.json"];
+var files = ["attendancedata.json", topo_url];
 
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
-    console.log(values[1].objects.eer.geometries)
-    const cities = topojson.object(values[1], values[1].objects.eer).geometries;
+    console.log(values[1].objects.lad.geometries)
+    const cities = topojson.object(values[1], values[1].objects.lad).geometries;
         group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
 
-        group.append('path').datum(topojson.mesh(values[1],values[1].objects.eer, function(a,b){return a!==b;}))
+        group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
         .attr('class','borders').attr('d',path);
 
     let attendanceData = values[0].attendanceData;

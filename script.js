@@ -76,7 +76,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     First let's count the number of students in the positiveAttendanceArray
     Distance/Region vs Attendace for both male & female
     */
-    const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,3))));
+    const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,2))));
     const distinctPostocdesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
     console.log(distinctPostocdesArray);

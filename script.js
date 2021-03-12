@@ -3,6 +3,9 @@ TODO: Complete locationpath.json file with all 63 areas.
 Show in tooltip average attendance based on each area for each gender.
 Show total attendance rate.
 Comment code for the sake of whoever will end up marking.
+
+Sheffield postcode start with only one letter(S) so add all students in any S postcode region
+Do same for Manchester postcode (M)
 */
 const width = 600;
 const height = 600;

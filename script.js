@@ -26,15 +26,27 @@ function zoomed(event,d) {
       .attr('transform', event.transform);
   }
 
-var files = ["attendancedata.json", topo_url];
+var files = ["attendancedata.json", topo_url, "locationpath.json"];
 
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
+    
     console.log(values[1].objects.lad.geometries)
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
-        group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
+    let locationPath = values[2].postcodes;
+    //console.log(locationPath[0].latitude);
+    const groupArea = svg.selectAll("g").data(values[1].objects.lad).enter().append("g")
 
-        group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
-        .attr('class','borders').attr('d',path);
+    //
+    group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
+    group.selectAll('path').data(locationPath).enter().append('circle').attr('r',20)
+    .attr('fill','red')
+    .attr("cx", function(d) {
+            return projection([d.longitude, d.latitude])[0];})
+    .attr("cy", function(d) {
+            return projection([d.longitude, d.latitude])[1];})
+
+    group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
+    .attr('class','borders').attr('d',path);
 
     let attendanceData = values[0].attendanceData;
 
@@ -77,9 +89,13 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
 
     Distance/Region vs Attendace for both male & female
     */
-    const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,2))));
+    const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,3))));
     const distinctPostocdesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
     console.log(distinctPostocdesArray);
+
+    //testing to see locationpath circles work
+    
+    
 
 });

@@ -1,3 +1,9 @@
+/*
+TODO: Complete locationpath.json file with all 63 areas.
+Show in tooltip average attendance based on each area for each gender.
+Show total attendance rate.
+Comment code for the sake of whoever will end up marking.
+*/
 const width = 600;
 const height = 600;
 let allAttendanceArray=[];
@@ -7,14 +13,14 @@ let pdgStatusAttendance = [];
 
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 
-//const url = "https://bost.ocks.org/mike/map/uk.json";
+//const uk_url = "https://bost.ocks.org/mike/map/uk.json";
 const projection = d3.geoMercator().translate([width/2,height/1.4]), path = d3.geoPath(projection);
 const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
 
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
 
-const div = d3.select("body").append("div")	.attr("class", "tooltip").style("opacity", 0);
+//const div = d3.select("body").append("div")	.attr("class", "tooltip").style("opacity", 0);
 const group = svg.append("g");
 
 svg.call(zoom);
@@ -65,9 +71,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         return isNaN(obj.postCode.substring(0));
     });
     //console.log(positiveAttendanceArray);
-    //console.log(positiveAttendanceArray[1].postCode.substring(0,2));
-
-
+    
     /*Let's see how many students live in each area based on postcode
     To do that replace all postcodes starting with 'TS' with 'Middlesbrough' to fit topojson...
     .see how many unique postcodes we have also to accomplish this and change to respective city names
@@ -78,9 +82,5 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const distinctPostocdesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
     console.log(distinctPostocdesArray);
-
-    //testing to see locationpath circles work
-    
-    
 
 });

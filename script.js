@@ -21,29 +21,24 @@ svg.call(zoom);
 
 
 function zoomed(event,d) {
-    group
-      .selectAll('path') 
-      .attr('transform', event.transform);
+    group.attr('transform', event.transform);
   }
 
 var files = ["attendancedata.json", topo_url, "locationpath.json"];
 
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
     
-    console.log(values[1].objects.lad.geometries)
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
-    let locationPath = values[2].postcodes;
+    const locationPath = values[2].postcodes;
     //console.log(locationPath[0].latitude);
-    const groupArea = svg.selectAll("g").data(values[1].objects.lad).enter().append("g")
 
     //
     group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
-    group.selectAll('path').data(locationPath).enter().append('circle').attr('r',20)
-    .attr('fill','red')
-    .attr("cx", function(d) {
-            return projection([d.longitude, d.latitude])[0];})
-    .attr("cy", function(d) {
-            return projection([d.longitude, d.latitude])[1];})
+
+    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","1").attr("fill","black")
+  .attr("transform",function(d){                 
+    return "translate(" + projection([d.longitude,d.latitude]) + ")";
+  });
 
     group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
     .attr('class','borders').attr('d',path);
@@ -53,11 +48,6 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     for (let i=0; i<attendanceData.length; i++){
         let studentDetails =  attendanceData[i];
         for (const key in studentDetails) {
-            //console.log(`${key}: ${studentDetails[key]}`);
-            /*let [studentId,gender,moduleCode,groupId,diffgrp,status,postCode]
-                =[studentDetails.StudentID,studentDetails.Gender,studentDetails.ModuleCode,
-                studentDetails.GroupId,studentDetails.DiffGrp,studentDetails.Status,studentDetails.PostalArea];
-            attendanceArray.push({studentId,gender,moduleCode,groupId,diffgrp,status,postCode});*/
             let [studentId,gender,status,postCode]
                 =[studentDetails.StudentID,studentDetails.Gender,studentDetails.Status,studentDetails.PostalArea];
                 allAttendanceArray.push({studentId,gender,status,postCode});
@@ -76,17 +66,14 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     positiveAttendanceArray=positiveAttendanceArray.filter(function( obj ) {
         return isNaN(obj.postCode.substring(0));
     });
-    console.log(positiveAttendanceArray);
-    console.log(positiveAttendanceArray[1].postCode.substring(0,2));
+    //console.log(positiveAttendanceArray);
+    //console.log(positiveAttendanceArray[1].postCode.substring(0,2));
 
 
     /*Let's see how many students live in each area based on postcode
-
     To do that replace all postcodes starting with 'TS' with 'Middlesbrough' to fit topojson...
     .see how many unique postcodes we have also to accomplish this and change to respective city names
-
     First let's count the number of students in the positiveAttendanceArray
-
     Distance/Region vs Attendace for both male & female
     */
     const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,3))));

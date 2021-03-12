@@ -1,5 +1,5 @@
-const width = 500;
-const height = 500;
+const width = 600;
+const height = 600;
 let allAttendanceArray=[];
 let positiveAttendanceArray=[];
 let pStatusAttendance= [];
@@ -14,7 +14,7 @@ const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
 
-
+const div = d3.select("body").append("div")	.attr("class", "tooltip").style("opacity", 0);
 const group = svg.append("g");
 
 svg.call(zoom);
@@ -30,15 +30,13 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
     const locationPath = values[2].postcodes;
-    //console.log(locationPath[0].latitude);
-
-    //let centroid = path.centroid(d);
+    
     group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
 
     group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","0.2")
-    .attr('fill', 'rgba(253, 227, 167, 0.8)').attr("transform",function(d){                 
+    .attr('fill', 'rgba(100, 2, 255, 0.8)').attr("transform",function(d){                 
     return "translate(" + projection([d.longitude,d.latitude]) + ")";
-  });
+  }).append('title').text((d)=>{return d.city;});
 
     group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
     .attr('class','borders').attr('d',path);

@@ -32,11 +32,11 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const locationPath = values[2].postcodes;
     //console.log(locationPath[0].latitude);
 
-    //
+    //let centroid = path.centroid(d);
     group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
 
-    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","1").attr("fill","black")
-  .attr("transform",function(d){                 
+    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","0.2")
+    .attr('fill', 'rgba(253, 227, 167, 0.8)').attr("transform",function(d){                 
     return "translate(" + projection([d.longitude,d.latitude]) + ")";
   });
 

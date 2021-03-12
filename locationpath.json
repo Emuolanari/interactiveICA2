@@ -1,7 +1,7 @@
 {"postcodes": [
-	{"code":"TS4","latitude":54.5513,"longitude":1.2220,"city":"Middlesbrough"},
-	{"code":"SR3","latitude":54.8760,"longitude":1.4100,"city":"Sunderland"},
-	{"code":"TS5","latitude":54.5537,"longitude":1.2523,"city":"Middlesbrough"},
-	{"code":"TS8","latitude":54.5100,"longitude":1.2369,"city":"Middlesbrough"}]
+	{"code":"TS4","longitude":-1.2220,"latitude":54.5513,"city":"Middlesbrough"},
+	{"code":"SR3","longitude":-1.4100,"latitude":54.8760,"city":"Sunderland"},
+	{"code":"TS5","longitude":-1.2523,"latitude":54.5537,"city":"Middlesbrough"},
+	{"code":"TS8","longitude":-1.2369,"latitude":54.5100,"city":"Middlesbrough"}]
 }
 			

@@ -1,10 +1,12 @@
 /*
-TODO: Show in tooltip average attendance based on each area for each gender.
+TODO: Show in tooltip correct average attendance based on each area for each gender.
 Comment code for the sake of whoever will end up marking.
+
+Increase default size of map
 
 Add remaining postcodes to locationpathjson file
 
-Explain some psotcodes were wrong so you removed the attendance for those entries
+Explain some postcodes were wrong so you removed the attendance for those entries
 
 Sheffield postcode start with only one letter(S) so add all students in any S postcode region
 Do same for Manchester postcode (M)
@@ -17,12 +19,14 @@ let pStatusAttendance= [];
 let pdgStatusAttendance = [];
 let femaleAttendanceArray =[];
 let maleAttendanceArray = [];
-
+//let center = d3.geoCentroid(json);
+//let scale  = 150;
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 
 //const uk_url = "https://bost.ocks.org/mike/map/uk.json";
-const projection = d3.geoMercator().translate([width/2,height/1.4]), path = d3.geoPath(projection);
-const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
+const projection = d3.geoMercator().translate([width/2,height/1.4]), 
+path = d3.geoPath(projection);
+const zoom = d3.zoom().scaleExtent([1, 170]).on('zoom', zoomed);
 
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
@@ -40,23 +44,16 @@ function zoomed(event,d) {
 var files = ["attendancedata.json", topo_url, "locationpath.json"];
 
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
-    
+    const attendanceData = values[0].attendanceData;
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
     const locationPath = values[2].postcodes;
-    
+
     group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
-
-    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","0.2")
-    .attr('fill', 'rgba(100, 2, 255, 0.8)').attr("transform",function(d){                 
-    return "translate(" + projection([d.longitude,d.latitude]) + ")";
-  }).append('title').text((d)=>{return d.city+'<br>'+'Male:'+'<br>'+'Female:';});
-
     group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
     .attr('class','borders').attr('d',path);
 
-    let attendanceData = values[0].attendanceData;
-
     for (let i=0; i<attendanceData.length; i++){
+        
         let studentDetails =  attendanceData[i];
         for (const key in studentDetails) {
             let [studentId,gender,status,postCode]
@@ -64,7 +61,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
                 allAttendanceArray.push({studentId,gender,status,postCode});
         }  
     }
-        
+
     pStatusAttendance = allAttendanceArray.filter(function( obj ) {
         return obj.status == 'P';
     });
@@ -72,15 +69,22 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         return obj.status == 'PDG';
     });
 
-
     positiveAttendanceArray = pStatusAttendance.concat(pdgStatusAttendance);
     positiveAttendanceArray=positiveAttendanceArray.filter(function( obj ) {
         return isNaN(parseInt(obj.postCode.substring(0)));
     });
 
-    const totalAttendanceRate = positiveAttendanceArray.length/allAttendanceArray.length * 100+'%';
-    //console.log(totalAttendanceRate);
-    //console.log(allAttendanceArray);
+    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","0.2")
+    .attr('fill', 'rgba(100, 2, 255, 0.8)').attr("transform",function(d){                 
+    return "translate(" + projection([d.longitude,d.latitude]) + ")";
+  }).append('title').text((d)=>{
+      return `${d.city}- Male: ${((d.maleAttendance/positiveAttendanceArray.length)*100).toFixed(2)}% Female: ${
+          (d.femaleAttendance/positiveAttendanceArray.length*100).toFixed(2)}%`;});
+        
+
+    const totalAttendanceRate = (positiveAttendanceArray.length/allAttendanceArray.length * 100).toFixed(2)+'%';
+    console.log(positiveAttendanceArray.length);
+    console.log(allAttendanceArray.length);
 
     maleAttendanceArray = positiveAttendanceArray.filter(function( obj ) {
         return obj.gender == 'M';
@@ -89,9 +93,9 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         return obj.gender == 'F';
     });
 
-    totalFemaleAttendance = femaleAttendanceArray.length/positiveAttendanceArray.length * 100+'%';
+    totalFemaleAttendance = (femaleAttendanceArray.length/positiveAttendanceArray.length * 100).toFixed(2)+'%';
 
-    totalMaleAttendance = maleAttendanceArray.length/positiveAttendanceArray.length * 100+'%';
+    totalMaleAttendance = (maleAttendanceArray.length/positiveAttendanceArray.length * 100).toFixed(2)+'%';
 
     //console.log(totalMaleAttendance+'male');
     //console.log(totalFemaleAttendance+'female');
@@ -120,18 +124,13 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
      multiplied by 100%
      */
 
-
      //I am using first two letters of postcode to get city names where I draw my circles over map, so I am creating
      //a new array to count the number of males & females in each city
      let genderCityObjects = [];
-
-     for (let i=0;i<positiveAttendanceArray.length;i++){
-        let details =  positiveAttendanceArray[i];
-        for (const field in details){
-            let [sex, twoDigitPostCode] = [details.gender,details.postCode.substring(0,2)];
-            genderCityObjects.push({sex, twoDigitPostCode});
-        }
-     }
+     positiveAttendanceArray.forEach(function(details){
+        let [sex, twoDigitPostCode] = [details.gender,details.postCode.substring(0,2)];
+        genderCityObjects.push({sex, twoDigitPostCode});
+     })
      /*Creating another array based on genderCityObjects with counts of each unique occurences so I can know how many
      males and females for each potcode*/
      let countMalesAndFemalesPerCity = {};
@@ -148,4 +147,5 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
      }
 
     console.log(splitCount);
+    console.log(genderCityObjects.length);
 });

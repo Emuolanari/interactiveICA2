@@ -9,7 +9,7 @@ Add remaining postcodes to locationpathjson file
 Explain some postcodes were wrong so you removed the attendance for those entries
 
 Sheffield postcode start with only one letter(S) so add all students in any S postcode region
-Do same for Manchester postcode (M)
+Do same for Manchester postcode (M) and birmingham(B)
 */
 const width = 600;
 const height = 600;
@@ -118,7 +118,8 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
 
     console.log(distinctPostcodesArray);
 
-
+    document.getElementById('areas').innerHTML =
+     '(Hover over circles on map to get more attendance details<br>Also use mouse to zoom in and out of map)';
     /*students in each locations contribution to the overall attendance grouped by gender
      For each location, divide the attendance for males and females by the overall attendance 
      multiplied by 100%

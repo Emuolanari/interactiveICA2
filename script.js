@@ -1,15 +1,10 @@
 /*
-TODO: Show in tooltip correct average attendance based on each area for each gender.
 Comment code for the sake of whoever will end up marking.
-
-Increase default size of map
 
 Add remaining postcodes to locationpathjson file
 
 Explain some postcodes were wrong so you removed the attendance for those entries
 
-Sheffield postcode start with only one letter(S) so add all students in any S postcode region
-Do same for Manchester postcode (M) and birmingham(B)
 */
 const width = 600;
 const height = 600;
@@ -93,6 +88,10 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         return obj.gender == 'F';
     });
 
+    /*students in each locations contribution to the overall attendance grouped by gender
+     For each location, divide the attendance for males and females by the overall attendance 
+     multiplied by 100%
+     */
     totalFemaleAttendance = (femaleAttendanceArray.length/positiveAttendanceArray.length * 100).toFixed(2)+'%';
 
     totalMaleAttendance = (maleAttendanceArray.length/positiveAttendanceArray.length * 100).toFixed(2)+'%';
@@ -104,27 +103,15 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     +totalFemaleAttendance+" Overall Female attendance rate"+"<br>"
     +totalMaleAttendance+" Overall Male attendance rate"+"<br>";
     //console.log(positiveAttendanceArray);
-    
-    /*Let's see how many students live in each area based on postcode
-    To do that replace all postcodes starting with 'TS' with 'Middlesbrough' to fit topojson...
-    .see how many unique postcodes we have also to accomplish this and change to respective city names
-    First let's count the number of students in the positiveAttendanceArray
-    Distance/Region vs Attendace for both male & female
-    */
 
     //to get unique postcodes from data
     const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,2))));
     const distinctPostcodesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
     //console.log(distinctPostcodesArray);
-     
-    /*students in each locations contribution to the overall attendance grouped by gender
-     For each location, divide the attendance for males and females by the overall attendance 
-     multiplied by 100%
-     */
 
      //I am using first two letters of postcode to get city names where I draw my circles over map, so I am creating
-     //a new array to count the number of males & females in each city
+     //a new array (genderCityObjects) to count the number of males & females in each city
      let genderCityObjects = [];
      positiveAttendanceArray.forEach(function(details){
         let [sex, twoDigitPostCode] = [details.gender,details.postCode.substring(0,2)];

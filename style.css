@@ -4,6 +4,13 @@
     display:block;
     border:1px solid blue;
 }
+#heading{
+    text-align:center;
+}
+
+#areas{
+    text-align:center;
+}
 
 .cities{
     fill: #eee;

@@ -24,7 +24,7 @@ let maleAttendanceArray = [];
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 
 //const uk_url = "https://bost.ocks.org/mike/map/uk.json";geoConicEqualArea
-const projection = d3.geoMercator().translate([width/2,height/1.4]).scale(2000).center([1.1743,52.3555]), 
+const projection = d3.geoMercator().translate([width/2,height/1.4]).scale(2500).center([-1.1743,52.3555]), 
 path = d3.geoPath(projection);
 const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
 
@@ -117,9 +117,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const distinctPostcodesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
     //console.log(distinctPostcodesArray);
-
-    document.getElementById('areas').innerHTML =
-     '(Hover over circles on map to get more attendance details<br>Also use mouse to zoom in and out of map)';
+     
     /*students in each locations contribution to the overall attendance grouped by gender
      For each location, divide the attendance for males and females by the overall attendance 
      multiplied by 100%

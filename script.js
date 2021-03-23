@@ -18,7 +18,7 @@ let maleAttendanceArray = [];
 //let scale  = 150;
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 
-//const uk_url = "https://bost.ocks.org/mike/map/uk.json";geoConicEqualArea
+//used scale to increase initial size of projected map and longitude & latitude of England for projection's center 
 const projection = d3.geoMercator().translate([width/2,height/1.4]).scale(2500).center([-1.1743,52.3555]), 
 path = d3.geoPath(projection);
 const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);

@@ -23,10 +23,10 @@ let maleAttendanceArray = [];
 //let scale  = 150;
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 
-//const uk_url = "https://bost.ocks.org/mike/map/uk.json";
-const projection = d3.geoMercator().translate([width/2,height/1.4]), 
+//const uk_url = "https://bost.ocks.org/mike/map/uk.json";geoConicEqualArea
+const projection = d3.geoMercator().translate([width/2,height/1.4]).scale(2000).center([1.1743,52.3555]), 
 path = d3.geoPath(projection);
-const zoom = d3.zoom().scaleExtent([1, 170]).on('zoom', zoomed);
+const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
 
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
@@ -74,7 +74,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         return isNaN(parseInt(obj.postCode.substring(0)));
     });
 
-    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","0.2")
+    group.selectAll(".dots").data(locationPath).enter().append("circle").attr("r","2")
     .attr('fill', 'rgba(100, 2, 255, 0.8)').attr("transform",function(d){                 
     return "translate(" + projection([d.longitude,d.latitude]) + ")";
   }).append('title').text((d)=>{
@@ -83,8 +83,8 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
         
 
     const totalAttendanceRate = (positiveAttendanceArray.length/allAttendanceArray.length * 100).toFixed(2)+'%';
-    console.log(positiveAttendanceArray.length);
-    console.log(allAttendanceArray.length);
+    //console.log(positiveAttendanceArray.length);
+    //console.log(allAttendanceArray.length);
 
     maleAttendanceArray = positiveAttendanceArray.filter(function( obj ) {
         return obj.gender == 'M';
@@ -116,7 +116,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const distinctPostocdesSet = new Set(positiveAttendanceArray.map(e => JSON.stringify(e.postCode.substring(0,2))));
     const distinctPostcodesArray = Array.from(distinctPostocdesSet).map(e => JSON.parse(e));
 
-    console.log(distinctPostcodesArray);
+    //console.log(distinctPostcodesArray);
 
     document.getElementById('areas').innerHTML =
      '(Hover over circles on map to get more attendance details<br>Also use mouse to zoom in and out of map)';
@@ -147,6 +147,6 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
          }
      }
 
-    console.log(splitCount);
-    console.log(genderCityObjects.length);
+    //console.log(splitCount);
+    //console.log(genderCityObjects.length);
 });

@@ -98,7 +98,7 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
       return `${d.city}- Male: ${((d.maleAttendance/positiveAttendanceArray.length)*100).toFixed(2)}% Female: ${
           (d.femaleAttendance/positiveAttendanceArray.length*100).toFixed(2)}%`;});
         
-    //adding a red circle to represent teeside university on the map
+    //adding a red circle to represent Teesside University on the map
     group.append("circle").attr("r","1").attr('fill', 'rgba(255, 0, 0, 0.8)')
     .attr("transform","translate(" + projection([-1.2352,54.5706]) + ")").append('title').text("Teesside University");
 

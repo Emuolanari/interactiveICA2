@@ -17,11 +17,14 @@ let maleAttendanceArray = [];
 //let center = d3.geoCentroid(json);
 //let scale  = 150;
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
+const wales_url = "https://martinjc.github.io/UK-GeoJSON/json/wal/topo_lad.json";
+const scotland_url = "https://martinjc.github.io/UK-GeoJSON/json/sco/topo_lad.json";
+const northern_ireland_url = "https://martinjc.github.io/UK-GeoJSON/json/ni/topo_lgd.json";
 
 //used scale to increase initial size of projected map and longitude & latitude of England for projection's center 
 const projection = d3.geoMercator().translate([width/2,height/1.4]).scale(2500).center([-1.1743,52.3555]), 
 path = d3.geoPath(projection);
-const zoom = d3.zoom().scaleExtent([1, 100]).on('zoom', zoomed);
+const zoom = d3.zoom().scaleExtent([1, 70]).on('zoom', zoomed);
 
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
@@ -36,15 +39,31 @@ function zoomed(event,d) {
     group.attr('transform', event.transform);
   }
 
-var files = ["attendancedata.json", topo_url, "locationpath.json"];
+var files = ["attendancedata.json", topo_url, "locationpath.json", wales_url, scotland_url,northern_ireland_url];
 
+/*After drawing the circles over the map, I decided to add the topojson for all countries in the UK, so the circle
+outside England is not just on white space*/
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const attendanceData = values[0].attendanceData;
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
     const locationPath = values[2].postcodes;
+    const welsh_cities = topojson.object(values[3], values[3].objects.lad).geometries;
+    const scottish_cities = topojson.object(values[4], values[4].objects.lad).geometries;
+    const irish_cities = topojson.object(values[5], values[5].objects.lgd).geometries;
 
-    group.selectAll('path').data(cities).enter().append('path').attr('class','cities').attr('d',path);
+    group.selectAll('england').data(cities).enter().append('path').attr('class','cities').attr('d',path);
+    group.selectAll('wales').data(welsh_cities).enter().append('path').attr('class','cities').attr('d',path);
+    group.selectAll('scotland').data(scottish_cities).enter().append('path').attr('class','cities').attr('d',path);
+    group.selectAll('ireland').data(irish_cities).enter().append('path').attr('class','cities').attr('d',path);
+
+
     group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
+    .attr('class','borders').attr('d',path);
+    group.append('path').datum(topojson.mesh(values[3],values[3].objects.lad, function(a,b){return a!==b;}))
+    .attr('class','borders').attr('d',path);
+    group.append('path').datum(topojson.mesh(values[4],values[4].objects.lad, function(a,b){return a!==b;}))
+    .attr('class','borders').attr('d',path);
+    group.append('path').datum(topojson.mesh(values[5],values[5].objects.lgd, function(a,b){return a!==b;}))
     .attr('class','borders').attr('d',path);
 
     for (let i=0; i<attendanceData.length; i++){

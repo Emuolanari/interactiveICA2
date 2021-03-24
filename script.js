@@ -14,8 +14,7 @@ let pStatusAttendance= [];
 let pdgStatusAttendance = [];
 let femaleAttendanceArray =[];
 let maleAttendanceArray = [];
-//let center = d3.geoCentroid(json);
-//let scale  = 150;
+
 const topo_url = "https://martinjc.github.io/UK-GeoJSON/json/eng/topo_lad.json";
 const wales_url = "https://martinjc.github.io/UK-GeoJSON/json/wal/topo_lad.json";
 const scotland_url = "https://martinjc.github.io/UK-GeoJSON/json/sco/topo_lad.json";
@@ -29,7 +28,6 @@ const zoom = d3.zoom().scaleExtent([1, 10]).on('zoom', zoomed);
 const svg = d3.select('body').append('svg').attr('width',width).attr('height',height)
 .attr('style', 'border: 1px solid black').attr('id', 'svgMain');
 
-//const div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 const group = svg.append("g");
 
 svg.call(zoom);
@@ -39,10 +37,13 @@ function zoomed(event,d) {
     group.attr('transform', event.transform);
   }
 
+//Data sources
 var files = ["attendancedata.json", topo_url, "locationpath.json", wales_url, scotland_url,northern_ireland_url];
 
-/*After drawing the circles over the map, I decided to add the topojson for all countries in the UK, so the circle
-outside England is not just on white space*/
+/* Extra info: After drawing the circles over the map, I decided to add the topojson for all countries in the UK,
+ so the circle outside England is not just on white space*/
+
+ //fetching the data from sources
 Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const attendanceData = values[0].attendanceData;
     const cities = topojson.object(values[1], values[1].objects.lad).geometries;
@@ -51,12 +52,15 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     const scottish_cities = topojson.object(values[4], values[4].objects.lad).geometries;
     const irish_cities = topojson.object(values[5], values[5].objects.lgd).geometries;
 
+//using topojson data to draw maps 
     group.selectAll('england').data(cities).enter().append('path').attr('class','cities').attr('d',path);
     group.selectAll('wales').data(welsh_cities).enter().append('path').attr('class','cities').attr('d',path);
     group.selectAll('scotland').data(scottish_cities).enter().append('path').attr('class','cities').attr('d',path);
     group.selectAll('ireland').data(irish_cities).enter().append('path').attr('class','cities').attr('d',path);
 
-
+    /*for rendering the strokes efficiently for the city borders, I will use topojson.mesh() and pass a filter
+    function to prune arcs from the returned mesh using the topology. 
+    Visit https://github.com/topojson/topojson-client/blob/master/README.md for more details*/
     group.append('path').datum(topojson.mesh(values[1],values[1].objects.lad, function(a,b){return a!==b;}))
     .attr('class','borders').attr('d',path);
     group.append('path').datum(topojson.mesh(values[3],values[3].objects.lad, function(a,b){return a!==b;}))
@@ -67,7 +71,6 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     .attr('class','borders').attr('d',path);
 
     for (let i=0; i<attendanceData.length; i++){
-        
         let studentDetails =  attendanceData[i];
         for (const key in studentDetails) {
             let [studentId,gender,status,postCode]

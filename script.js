@@ -98,6 +98,9 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
       return `${d.city}- Male: ${((d.maleAttendance/positiveAttendanceArray.length)*100).toFixed(2)}% Female: ${
           (d.femaleAttendance/positiveAttendanceArray.length*100).toFixed(2)}%`;});
         
+    //adding a red circle to represent teeside university on the map
+    group.append("circle").attr("r","1").attr('fill', 'rgba(255, 0, 0, 0.8)')
+    .attr("transform","translate(" + projection([-1.2352,54.5706]) + ")").append('title').text("Teesside University");
 
     const totalAttendanceRate = (positiveAttendanceArray.length/allAttendanceArray.length * 100).toFixed(2)+'%';
     //console.log(positiveAttendanceArray.length);
@@ -121,9 +124,9 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
     //console.log(totalMaleAttendance+'male');
     //console.log(totalFemaleAttendance+'female');
 
-    document.getElementById('rate').innerHTML = totalAttendanceRate+" Overall attendance rate"+"<br>"
-    +totalFemaleAttendance+" Overall Female attendance rate"+"<br>"
-    +totalMaleAttendance+" Overall Male attendance rate"+"<br>";
+    document.getElementById('rate').innerHTML = totalAttendanceRate+" Positive attendance"+"<br>"+
+    "From the postive attendance,female attendance made up "+totalFemaleAttendance+"<br>"+
+    "and male attendance made up "+totalMaleAttendance+"<br>";
     //console.log(positiveAttendanceArray);
 
     //to get unique postcodes from data

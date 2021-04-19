@@ -73,8 +73,11 @@
 	{"longitude":-0.9781,"latitude":51.4543,"city":"Reading","femaleAttendance":0,"maleAttendance":336},
 	{"longitude":-0.5067,"latitude":51.3880,"city":"Rochester","femaleAttendance":0,"maleAttendance":248},
 	{"longitude":-0.3352,"latitude":51.4446,"city":"Twickenham","femaleAttendance":432,"maleAttendance":36},
-	{"longitude":-0.1966,"latitude":51.9038,"city":"Stevenage","femaleAttendance":136,"maleAttendance":212}
-	
+	{"longitude":-0.1966,"latitude":51.9038,"city":"Stevenage","femaleAttendance":136,"maleAttendance":212},
+	{"longitude":-2.8931,"latitude":53.1934,"city":"Chester","femaleAttendance":260,"maleAttendance":348},
+	{"longitude":-4.2518,"latitude":55.8642,"city":"Glasgow","femaleAttendance":0,"maleAttendance":236},
+	{"longitude":-0.0763,"latitude":51.5566,"city":"Ilford","femaleAttendance":264,"maleAttendance":0},
+	{"longitude":-4.2518,"latitude":55.8642,"city":"Guildford","femaleAttendance":580,"maleAttendance":116}
 ]
 }
 	

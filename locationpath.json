@@ -71,7 +71,9 @@
 	{"longitude":-0.7594,"latitude":52.0406,"city":"Milton-Keynes","femaleAttendance":256,"maleAttendance":184},
 	{"longitude":-2.4438,"latitude":53.1004,"city":"Crewe","femaleAttendance":276,"maleAttendance":12},
 	{"longitude":-0.9781,"latitude":51.4543,"city":"Reading","femaleAttendance":0,"maleAttendance":336},
-	{"longitude":-0.5067,"latitude":51.3880,"city":"Rochester","femaleAttendance":0,"maleAttendance":248}
+	{"longitude":-0.5067,"latitude":51.3880,"city":"Rochester","femaleAttendance":0,"maleAttendance":248},
+	{"longitude":-0.3352,"latitude":51.4446,"city":"Twickenham","femaleAttendance":432,"maleAttendance":36},
+	{"longitude":-0.1966,"latitude":51.9038,"city":"Stevenage","femaleAttendance":136,"maleAttendance":212}
 	
 ]
 }

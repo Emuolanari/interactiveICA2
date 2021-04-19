@@ -65,7 +65,14 @@
 	{"longitude":-2.2216,"latitude":52.1936,"city":"Worcester","femaleAttendance":315,"maleAttendance":0},
 	{"longitude":0.5950,"latitude":51.5105,"city":"Slough","femaleAttendance":155,"maleAttendance":320},
 	{"longitude":-1.4044,"latitude":50.9097,"city":"Southampton","femaleAttendance":360,"maleAttendance":120},
-	{"longitude":-2.1794,"latitude":53.0027,"city":"Stoke-on-trent","femaleAttendance":480,"maleAttendance":390}
+	{"longitude":-2.1794,"latitude":53.0027,"city":"Stoke-on-trent","femaleAttendance":480,"maleAttendance":390},
+	{"longitude":-3.1791,"latitude":51.4816,"city":"Cardiff","femaleAttendance":380,"maleAttendance":628},
+	{"longitude":-2.7553,"latitude":52.7073,"city":"Shrewsbury","femaleAttendance":480,"maleAttendance":396},
+	{"longitude":-0.7594,"latitude":52.0406,"city":"Milton-Keynes","femaleAttendance":256,"maleAttendance":184},
+	{"longitude":-2.4438,"latitude":53.1004,"city":"Crewe","femaleAttendance":276,"maleAttendance":12},
+	{"longitude":-0.9781,"latitude":51.4543,"city":"Reading","femaleAttendance":0,"maleAttendance":336},
+	{"longitude":-0.5067,"latitude":51.3880,"city":"Rochester","femaleAttendance":0,"maleAttendance":248}
+	
 ]
 }
 	

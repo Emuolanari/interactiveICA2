@@ -35,7 +35,7 @@ svg.call(zoom);
 
 function zoomed(event,d) {
     group.attr('transform', event.transform);
-  }
+}
 
 //Data sources
 var files = ["attendancedata.json", topo_url, "locationpath.json", wales_url, scotland_url,northern_ireland_url];
@@ -157,6 +157,6 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
          }
      }
 
-    //console.log(splitCount);
-    //console.log(genderCityObjects.length);
+    console.log(splitCount);
+    console.log(genderCityObjects.length);
 });

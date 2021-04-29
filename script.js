@@ -1,10 +1,7 @@
 /*
 Comment code for the sake of whoever will end up marking.
-
 Add remaining postcodes to locationpathjson file
-
 Explain some postcodes were wrong so you removed the attendance for those entries
-
 */
 const width = 600;
 const height = 600;
@@ -157,6 +154,6 @@ Promise.all(files.map(url => d3.json(url))).then(function(values) {
          }
      }
 
-    console.log(splitCount);
-    console.log(genderCityObjects.length);
+    //console.log(splitCount);
+    //console.log(genderCityObjects.length);
 });
